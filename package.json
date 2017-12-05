@@ -1,5 +1,5 @@
 {
-  "name": "binance-api",
+  "name": "binance-cryptoexchange-api",
   "version": "0.0.1",
   "description": "Simple typescript interface to the Binance cryptoexchange.",
   "main": "index.js",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/haleyga/binance-api.git"
+    "url": "git+https://github.com/haleyga/binance-cryptoexchange-api.git"
   },
   "keywords": [
     "crypto",
@@ -27,9 +27,9 @@
   "author": "Graham Haley",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/haleyga/binance-api/issues"
+    "url": "https://github.com/haleyga/binance-cryptoexchange-api/issues"
   },
-  "homepage": "https://github.com/haleyga/binance-api#readme",
+  "homepage": "https://github.com/haleyga/binance-cryptoexchange-api#readme",
   "devDependencies": {
     "@types/axios": "^0.14.0",
     "@types/chai": "^4.0.0",
