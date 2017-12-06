@@ -12,9 +12,10 @@ const axios = axiosDefault.default;
  * Default configuration.
  */
 const defaultConfig = {
-    rootUrl: `https://api.binance.com`,
-    timeout: 3000,
-    version: 'v3',
+    recvWindow: 5000,   // this is discussed in the Binance API documentation
+    rootUrl   : `https://api.binance.com`,
+    timeout   : 3000,
+    version   : 'v3',
 };
 
 /**
@@ -69,10 +70,11 @@ export interface IPostBody {
  */
 export const signMessage = (postData: IPostBody, secret: string): ISignature => {
     //tslint:disable:no-magic-numbers
-    const timestamp = Date.now();
+    const timestamp  = Date.now();
+    const recvWindow = defaultConfig.recvWindow;
     //tslint:enable:no-magic-numbers
 
-    const signedBody = { ...postData, timestamp };
+    const signedBody = { ...postData, timestamp, recvWindow };
     const digest     = crypto.createHmac('sha256', secret)
                              .update(qs.stringify(signedBody))
                              .digest('hex');
@@ -224,146 +226,6 @@ export const getRawAgent = (auth?: IApiAuth): IRawAgent => ({
      */
     upgrade(newAuth: IApiAuth): void { this.auth = newAuth; },
 });
-
-export type ITimeResult = {
-    serverTime: number;
-}
-
-// the last element in the array may be ignored (according to Binance docs...)
-// [ price, qantity, []]
-export type IEntryResult = [string, string, {}[]];
-
-export type IOrderBookResult = {
-    lastUpdateId: number;
-    bids: IEntryResult[];
-    asks: IEntryResult[];
-};
-
-export type IAggTradesResult = {
-    a: number;         // Aggregate tradeId
-    p: string;  // Price
-    q: string;  // Quantity
-    f: number;         // First tradeId
-    l: number;         // Last tradeId
-    T: number; // Timestamp
-    m: boolean;          // Was the buyer the maker?
-    M: boolean;           // Was the trade the best price match?
-};
-
-export type ICandleResult = [
-    number,      // Open time
-    string,       // Open
-    string,       // High
-    string,       // Low
-    string,       // Close
-    string,  // Volume
-    number,      // Close time
-    string,    // Quote asset volume
-    number,                // Number of trades
-    string,    // Taker buy base asset volume
-    string,      // Taker buy quote asset volume
-    string // Can be ignored
-    ];
-
-export type I24HourStatsResult = {
-    priceChange: string,
-    priceChangePercent: string,
-    weightedAvgPrice: string,
-    prevClosePrice: string,
-    lastPrice: string,
-    bidPrice: string,
-    askPrice: string,
-    openPrice: string,
-    highPrice: string,
-    lowPrice: string,
-    volume: string,
-    openTime: number,
-    closeTime: number,
-    fristId: number,   // First tradeId
-    lastId: number,    // Last tradeId
-    count: number         // Trade count
-};
-
-export type ILastPriceResult = {
-    symbol: string,
-    price: string,
-};
-
-export type ITickerResult = {
-    symbol: string;
-    bidPrice: string;
-    bidQty: string;
-    askPrice: string;
-    askQty: string;
-};
-
-export type IOrderResult = {
-    symbol: string;
-    orderId: number;
-    clientOrderId: string;
-    price: string;
-    origQty: string;
-    executedQty: string;
-    status: string;
-    timeInForce: string;
-    type: string;
-    side: string;
-    stopPrice: string;
-    icebergQty: string;
-    time: number;
-};
-
-export type ICancelOrderResult = {
-    symbol: string;
-    origClientOrderId: string;
-    orderId: number;
-    clientOrderId: string;
-};
-
-export type ITradeResult = {
-    id: number;
-    price: string;
-    qty: string;
-    commission: string;
-    commissionAsset: string;
-    time: number;
-    isBuyer: boolean;
-    isMaker: boolean;
-    isBestMatch: boolean;
-};
-
-export type IWithdrawRequestResult = {
-    msg: string;
-    success: boolean;
-    id: string;
-};
-
-export type ITransactionResult = {
-    insertTime: number;
-    amount: number;
-    asset: string;
-    address: string;
-    addressTag: string;
-    txId: string;
-    status: number;
-};
-
-export type IDepositHistoryResult = {
-    depositList: ITransactionResult[];
-    success: boolean;
-};
-
-export type IWithdrawalHistoryResult = {
-    withdrawList: ITransactionResult[];
-    success: boolean;
-};
-
-export type IGetDepositAddressResult = {
-    address: string;
-    success: boolean;
-    addressTag: string;
-    asset: string;
-};
 
 export interface IBinanceClient {
     rawAgent: IRawAgent;
