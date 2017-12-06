@@ -445,7 +445,12 @@ export const getClient = (auth?: IApiAuth, configOverride: IBinanceRequestConfig
 /**
  * Alias for Axios request options.
  */
-export interface IBinanceRequestConfig extends AxiosRequestConfig {}
+export interface IBinanceRequestConfig extends AxiosRequestConfig {
+    recvWindow: number;
+    rootUrl: string;
+    timeout: number;
+    version: string;
+}
 
 /**
  * Alias for Axios response.
