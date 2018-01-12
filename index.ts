@@ -26,7 +26,7 @@ const defaultAgentConfig = {
     headers: {
         'Cache-Control' : 'no-cache',
         'Content-Length': 0,
-        'Content-Type'  : 'text/plain',
+        'Content-Type'  : 'application/x-www-form-urlencoded',
         'User-Agent'    : `Binance API Client (binance-cryptoexchange-api node package)`,
     },
     method : 'GET',
@@ -193,17 +193,20 @@ export const getRawAgent = (auth?: IApiAuth): IRawAgent => ({
             ...headersOverride,
         };
 
-        const data     = signatureData.body;
-        const postData = method === 'GET' ? null : data;
+        const data = signatureData.body;
+//        const postData = method === 'GET' ? null : data;
 
         // The uri is a relative path to the privateAgentConfig,baseUrl
-        const uri = method === 'GET' ? `/${endpoint}?${qs.stringify(data)}` : `/${endpoint}`;
+//        const uri = method === 'GET' ? `/${endpoint}?${qs.stringify(data)}` : `/${endpoint}`;
+        const uri = `/${endpoint}?${qs.stringify(data)}`;
 
         // Construct the actual config to be used
-        const agentConfig = { ...privateAgentConfig, headers, method, url: uri, data: postData, ...config };
+        const agentConfig = { ...privateAgentConfig, headers, method, url: uri, ...config };
 
         try {
             const response = await axios(agentConfig);
+
+//            console.log(JSON.stringify(agentConfig, null, 2));
 
             // Finally, send the request and return the response
             return Promise.resolve(response);
