@@ -2,8 +2,11 @@
   "name": "binance-cryptoexchange-api",
   "version": "0.2.5",
   "description": "Simple typescript interface to the Binance cryptoexchange.",
-  "main": "dist/es6/index.js",
-  "types": "dist/es6/index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc",
     "clean": "rm -rf dist",

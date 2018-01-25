@@ -22,15 +22,16 @@ const defaultConfig = {
  * Default HTTP agent configuration.
  */
 const defaultAgentConfig = {
-    baseURL: defaultConfig.rootUrl,
-    headers: {
+    baseURL       : defaultConfig.rootUrl,
+    headers       : {
         'Cache-Control' : 'no-cache',
         'Content-Length': 0,
         'Content-Type'  : 'application/x-www-form-urlencoded',
         'User-Agent'    : `Binance API Client (binance-cryptoexchange-api node package)`,
     },
-    method : 'GET',
-    timeout: defaultConfig.timeout,
+    method        : 'GET',
+    timeout       : defaultConfig.timeout,
+    validateStatus: () => true,
 };
 
 /**
@@ -194,10 +195,8 @@ export const getRawAgent = (auth?: IApiAuth): IRawAgent => ({
         };
 
         const data = signatureData.body;
-//        const postData = method === 'GET' ? null : data;
 
         // The uri is a relative path to the privateAgentConfig,baseUrl
-//        const uri = method === 'GET' ? `/${endpoint}?${qs.stringify(data)}` : `/${endpoint}`;
         const uri = `/${endpoint}?${qs.stringify(data)}`;
 
         // Construct the actual config to be used
